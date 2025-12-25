@@ -1,0 +1,24 @@
+RSI Unified One-File (v3) — Self-inventing search operators
+==========================================================
+
+What was added:
+- SCIG can now *invent* a new search/mutation operator (a short 'mutation program' = sequence of primitive mutators),
+  evaluate it, and if it improves, **install** it into its own operator library.
+
+Installation modes:
+1) Disk install (default): writes to <outdir>/operators.json
+2) Optional source patch: --self_patch_ops
+   - Rewrites the in-file OPERATORS_LIB block in-place (edits this script)
+
+Key flags (SCIG):
+  --ops_synth_every N     synthesize a new operator every N steps (0 disables)
+  --ops_trials K          K trials to estimate avg gain
+  --ops_min_avg_gain G    accept if avg gain >= G
+  --ops_lib_path PATH     override library path (default <outdir>/operators.json)
+  --self_patch_ops        patch the running script in-place when installing
+
+Examples:
+  python rsi_unified_onefile.py --engine scig --steps 300 --task mix --outdir runs/scig_self     --ops_synth_every 40 --ops_trials 6 --ops_min_avg_gain 1e-4
+
+Smoke test tip (force install easily):
+  --ops_min_avg_gain 0.0  (accept any non-worse average gain)
